@@ -31,11 +31,38 @@ st.markdown("""
         font-size: 2.8rem;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         padding: 30px 40px;
         border-radius: 12px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         letter-spacing: 0.5px;
+    }
+    
+    /* Target audience styling */
+    .target-audience {
+        font-size: 1.15rem;
+        color: #374151;
+        text-align: left;
+        margin: 15px 0;
+        font-weight: 600;
+        padding: 10px 15px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        border-left: 4px solid #6b7280;
+    }
+    
+    /* Knowledge base styling */
+    .knowledge-base {
+        font-size: 1.1rem;
+        color: #1e40af;
+        text-align: left;
+        margin: 15px 0;
+        font-weight: 500;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-radius: 10px;
+        border-left: 5px solid #3b82f6;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     
     /* Suggestion prompt styling - Mild color background, Bold, Bigger */
@@ -114,38 +141,10 @@ st.markdown("""
         padding-bottom: 12px;
         border-bottom: 3px solid #9ca3af;
     }
-    
-    /* Info box */
-    .info-box {
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-        border-left: 5px solid #6b7280;
-        padding: 18px;
-        margin: 20px 0;
-        border-radius: 8px;
-        color: #374151;
-        font-size: 1.05rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Academic theme - overall container */
-    .main-container {
-        background-color: #fafafa;
-        padding: 20px;
-        border-radius: 12px;
-    }
-    
-    /* Subtitle styling */
-    .subtitle {
-        color: #6b7280;
-        font-size: 1.2rem;
-        text-align: center;
-        margin-bottom: 30px;
-        font-weight: 500;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# topics from knowledge base
+# Cloud Computing topics from knowledge base
 cloud_topics = [
     "Evolution from centralized to distributed systems: A technical timeline",
     "Client-server vs. peer-to-peer architecture: A comparative study",
@@ -215,21 +214,16 @@ with st.sidebar:
             st.success("✅ API Key saved!")
     
     st.markdown("---")
-    st.info("🎓 **For:** B.E. CS / B.Tech IT Engineering Students & Job Seekers")
+    st.info("🎓 **For:** B.E. CS / B.Tech IT Students & Job Seekers")
 
-# Main Title - Gray background with white text
-st.markdown('<p class="main-title">⚖️ CLOUD COMPUTING  Chatbot</p>', unsafe_allow_html=True)
+# Main Title Section
+st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_allow_html=True)
 
-# Subtitle
-st.markdown('<p class="subtitle"><b>Interactive Learning Platform for Cloud Computing Concepts</b></p>', unsafe_allow_html=True)
+# Target Audience
+st.markdown('<p class="target-audience">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</p>', unsafe_allow_html=True)
 
-# Info box
-st.markdown("""
-    <div class="info-box">
-        <strong>📚 How to use:</strong> Click on any suggested prompt below OR type your own question about Cloud Computing, 
-        then click "Submit Prompt" to get AI-powered answers from Qwen AI model.
-    </div>
-""", unsafe_allow_html=True)
+# Knowledge Base
+st.markdown('<p class="knowledge-base">📚 <strong>Knowledge Base:</strong> ** loaded with comprehensive Cloud Computing topics across all units</p>', unsafe_allow_html=True)
 
 # Create two main columns
 col_left, col_right = st.columns([1, 1])

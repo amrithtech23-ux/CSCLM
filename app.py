@@ -26,9 +26,9 @@ st.markdown("""
     
     /* Main title styling - Gray background, White text, Larger font */
     .main-title {
-        background: WHite;
-        color: Black;
-        font-size: 10 rem;
+        background: Blue;
+        color: White;
+        font-size: 30 rem;
         font-weight: bold;
         text-align: center;
         margin-bottom: 1rem;

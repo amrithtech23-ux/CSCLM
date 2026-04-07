@@ -21,14 +21,14 @@ st.markdown("""
     footer {visibility: hidden;}
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
-    /* Main Title - LARGER FONT SIZE */
+    /* Main Title - MUCH LARGER FONT SIZE */
     .main-title {
         color: #1e293b;
-        font-size: 4rem;  /* Increased from 3.2rem to 4rem */
+        font-size: 5.5rem;  /* Increased from 4rem to 5.5rem */
         font-weight: 800;
         text-align: center;
         margin: 20px 0 10px 0;
-        padding: 20px;
+        padding: 25px;
         background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -83,19 +83,30 @@ st.markdown("""
         padding: 25px;
         border-radius: 12px;
         border: 2px solid #e2e8f0;
-        font-size: 1.1rem;
-        line-height: 1.4;  /* Reduced from 1.6 to 1.4 */
+        font-size: 1.15rem;  /* Slightly larger text */
+        line-height: 1.3;  /* Reduced from 1.4 to 1.3 */
         margin-top: 20px;
         white-space: pre-wrap;
     }
     
-    /* Remove extra margin between paragraphs in results */
+    /* Remove extra margin between paragraphs in results - TIGHTER */
     .result-area p {
-        margin: 0.5em 0;  /* Reduced paragraph spacing */
+        margin: 0.3em 0;  /* Reduced from 0.5em to 0.3em */
+        line-height: 1.3;
     }
     
-    .result-area h1, .result-area h2, .result-area h3 {
-        margin: 0.8em 0 0.5em 0;  /* Reduced heading spacing */
+    .result-area h1, .result-area h2, .result-area h3, .result-area h4 {
+        margin: 0.6em 0 0.4em 0;  /* Reduced heading spacing */
+        line-height: 1.3;
+    }
+    
+    .result-area ul, .result-area ol {
+        margin: 0.3em 0;
+        padding-left: 1.5em;
+    }
+    
+    .result-area li {
+        margin: 0.2em 0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -161,7 +172,7 @@ with st.sidebar:
 
 # --- UI Layout ---
 
-# 1. Title Section - LARGER FONT
+# 1. Title Section - MUCH LARGER FONT
 st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_allow_html=True)
 
 # 2. Info Bars
@@ -200,9 +211,17 @@ if submit_btn and user_query:
                     "X-Title": "CSCLM Cloud Computing Chatbot"
                 }
                 
+                # Enhanced system prompt - NO "Certainly!" or similar phrases
                 system_prompt = f"""You are an expert Cloud Computing instructor for B.E. Computer Science and B.Tech IT students.
                 Your knowledge base contains {len(all_topics)} unique topics covering distributed systems, virtualization, security, and programming models.
-                Provide clear, detailed, educational answers with practical examples."""
+                
+IMPORTANT INSTRUCTIONS:
+- Provide clear, detailed, educational answers with practical examples
+- DO NOT use introductory phrases like "Certainly!", "Of course!", "Sure!", "I'd be happy to help", etc.
+- Start directly with the answer content
+- Use concise paragraphs with minimal spacing
+- Structure information with headings and bullet points where appropriate
+- Focus on technical accuracy and educational value"""
                 
                 payload = {
                     "model": "qwen/qwen-2.5-72b-instruct",
@@ -222,7 +241,12 @@ if submit_btn and user_query:
                 )
                 
                 if response.status_code == 200:
-                    st.session_state.result = response.json()["choices"][0]["message"]["content"]
+                    result_text = response.json()["choices"][0]["message"]["content"]
+                    
+                    # Remove "Certainly!" and similar phrases from the beginning
+                    result_text = re.sub(r'^(Certainly!|Of course!|Sure!|I\'d be happy to help|Absolutely!)\s*', '', result_text, flags=re.IGNORECASE)
+                    
+                    st.session_state.result = result_text.strip()
                     st.success("✅ Response received!")
                 else:
                     st.error(f"❌ Error: {response.text}")

@@ -24,99 +24,123 @@ st.markdown("""
     /* Hide sidebar toggle button */
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
-    /* Main title styling */
+    /* Main title styling - Gray background, White text, Larger font */
     .main-title {
-        color: #4169E1;
-        font-size: 2.5rem;
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        color: white;
+        font-size: 2.8rem;
         font-weight: bold;
         text-align: center;
         margin-bottom: 2rem;
-        padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        letter-spacing: 0.5px;
     }
     
-    /* Suggestion prompt styling - Gray, Bold, Bigger */
+    /* Suggestion prompt styling - Mild color background, Bold, Bigger */
     .suggestion-button {
-        background-color: #f5f5f5;
-        color: #4a4a4a;
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        color: #374151;
         font-size: 1.15rem;
         font-weight: bold;
-        padding: 15px 20px;
-        margin: 8px 0;
-        border-radius: 8px;
-        border: 2px solid #d0d0d0;
+        padding: 18px 24px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: 2px solid #d1d5db;
         text-align: left;
         width: 100%;
         cursor: pointer;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     
     .suggestion-button:hover {
-        background-color: #e8e8e8;
-        border-color: #4169E1;
+        background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+        border-color: #6b7280;
         transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
     /* Input text area styling */
     .stTextArea textarea {
         background-color: #ffffff;
-        color: #333333;
-        font-weight: bold;
+        color: #1f2937;
+        font-weight: 600;
         font-size: 1.1rem;
-        border: 3px solid #4169E1;
+        border: 2px solid #9ca3af;
         border-radius: 8px;
     }
     
     /* Result text area styling */
     .result-area {
-        background-color: #1E3A8A;
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
         color: white;
         padding: 25px;
         border-radius: 10px;
-        border: 3px solid #4169E1;
-        font-weight: bold;
+        border: 2px solid #6b7280;
+        font-weight: 600;
         font-size: 1.1rem;
         min-height: 300px;
         white-space: pre-wrap;
         line-height: 1.6;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     /* Button styling */
     .stButton > button {
-        background-color: #4169E1;
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
         color: white;
         font-weight: bold;
         font-size: 1.1rem;
-        border: 3px solid #4169E1;
+        border: 2px solid #6b7280;
         padding: 12px 30px;
         border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .stButton > button:hover {
-        background-color: #1E3A8A;
-        border-color: #1E3A8A;
+        background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+        border-color: #374151;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
     
     /* Section headers */
     .section-header {
-        color: #4169E1;
-        font-size: 1.5rem;
+        color: #4b5563;
+        font-size: 1.6rem;
         font-weight: bold;
-        margin: 20px 0 15px 0;
-        padding-bottom: 10px;
-        border-bottom: 3px solid #4169E1;
+        margin: 25px 0 15px 0;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #9ca3af;
     }
     
     /* Info box */
     .info-box {
-        background-color: #f0f8ff;
-        border-left: 5px solid #4169E1;
-        padding: 15px;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-left: 5px solid #6b7280;
+        padding: 18px;
         margin: 20px 0;
-        border-radius: 5px;
+        border-radius: 8px;
+        color: #374151;
+        font-size: 1.05rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Academic theme - overall container */
+    .main-container {
+        background-color: #fafafa;
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    /* Subtitle styling */
+    .subtitle {
+        color: #6b7280;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -193,8 +217,11 @@ with st.sidebar:
     st.markdown("---")
     st.info("🎓 **For:** B.E. CS / B.Tech IT Students & Job Seekers")
 
-# Main Title
+# Main Title - Gray background with white text
 st.markdown('<p class="main-title">⚖️ CLOUD COMPUTING for B.E.Computer Science/B.Tech Information Technology Chatbot</p>', unsafe_allow_html=True)
+
+# Subtitle
+st.markdown('<p class="subtitle">Interactive Learning Platform for Cloud Computing Concepts</p>', unsafe_allow_html=True)
 
 # Info box
 st.markdown("""
@@ -211,9 +238,9 @@ col_left, col_right = st.columns([1, 1])
 with col_left:
     st.markdown('<p class="section-header">💡 Suggested Prompts (Click to Use)</p>', unsafe_allow_html=True)
     
-    # Display 10 random suggestions with gray, bold, bigger font
+    # Display 10 random suggestions with mild color background, bold, bigger font
     for i, suggestion in enumerate(st.session_state.suggestions):
-        # Create button with custom styling
+        # Create button with custom styling - mild gray background
         btn_key = f"sugg_{i}"
         if st.button(f"📌 {i+1}. {suggestion}", key=btn_key, use_container_width=True):
             st.session_state.query = suggestion
@@ -316,17 +343,20 @@ with col_right:
         """, unsafe_allow_html=True)
     else:
         st.markdown("""
-            <div class="result-area" style="color: #a0aec0; font-style: italic;">
+            <div class="result-area" style="color: #9ca3af; font-style: italic;">
                 Your response will appear here after submitting a query...
             </div>
         """, unsafe_allow_html=True)
 
-# Footer
+# Footer with academic theme
 st.markdown("---")
 st.markdown("""
-    <div style="text-align: center; color: #4169E1; font-weight: bold; padding: 20px; margin-top: 30px;">
-        <p style="font-size: 1.2rem;">🎓 CSCLM - Cloud Computing Learning Module</p>
-        <p>B.E. Computer Science | B.Tech Information Technology</p>
-        <p style="font-size: 0.9rem; margin-top: 10px;">License: MIT | Powered by OpenRouter API & Qwen AI</p>
+    <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
+                text-align: center; color: #4b5563; font-weight: bold; 
+                padding: 25px; margin-top: 30px; border-radius: 10px;
+                border-top: 3px solid #9ca3af;">
+        <p style="font-size: 1.3rem; margin-bottom: 8px;">🎓 CSCLM - Cloud Computing Learning Module</p>
+        <p style="font-size: 1.05rem; margin-bottom: 12px;">B.E. Computer Science | B.Tech Information Technology</p>
+        <p style="font-size: 0.95rem; color: #6b7280;">License: MIT | Powered by OpenRouter API & Qwen AI</p>
     </div>
 """, unsafe_allow_html=True)

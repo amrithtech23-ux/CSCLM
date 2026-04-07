@@ -1,4 +1,4 @@
-import streamlit as st
+ import streamlit as st
 import requests
 import json
 import random
@@ -21,18 +21,26 @@ st.markdown("""
     footer {visibility: hidden;}
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
-    /* Main Title - MUCH LARGER FONT SIZE */
+    /* Main Title - MUCH LARGER FONT SIZE - FORCE OVERRIDE */
     .main-title {
-        color: #1e293b;
-        font-size: 5.5rem;  /* Increased from 4rem to 5.5rem */
-        font-weight: 800;
-        text-align: center;
-        margin: 20px 0 10px 0;
-        padding: 25px;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        letter-spacing: -0.5px;
+        color: #1e293b !important;
+        font-size: 5.5rem !important;
+        font-weight: 800 !important;
+        text-align: center !important;
+        margin: 20px 0 10px 0 !important;
+        padding: 25px !important;
+        background-color: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        letter-spacing: -0.5px !important;
+        line-height: 1.2 !important;
+        display: block !important;
+    }
+    
+    /* Remove any paragraph styling that might interfere */
+    .main-title p {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Info Boxes */
@@ -83,20 +91,20 @@ st.markdown("""
         padding: 25px;
         border-radius: 12px;
         border: 2px solid #e2e8f0;
-        font-size: 1.15rem;  /* Slightly larger text */
-        line-height: 1.3;  /* Reduced from 1.4 to 1.3 */
+        font-size: 1.15rem;
+        line-height: 1.3;
         margin-top: 20px;
         white-space: pre-wrap;
     }
     
-    /* Remove extra margin between paragraphs in results - TIGHTER */
+    /* Remove extra margin between paragraphs in results */
     .result-area p {
-        margin: 0.3em 0;  /* Reduced from 0.5em to 0.3em */
+        margin: 0.3em 0;
         line-height: 1.3;
     }
     
     .result-area h1, .result-area h2, .result-area h3, .result-area h4 {
-        margin: 0.6em 0 0.4em 0;  /* Reduced heading spacing */
+        margin: 0.6em 0 0.4em 0;
         line-height: 1.3;
     }
     
@@ -121,13 +129,8 @@ def load_knowledge_base():
     if kb_path.exists():
         with open(kb_path, 'r', encoding='utf-8') as f:
             content = f.read()
-            # Regex to find lines starting with a number followed by a dot (e.g., "1. Topic")
             matches = re.findall(r'^\d+\.\s+(.+)$', content, re.MULTILINE)
-            
-            # Strip whitespace and remove duplicates using set()
             unique_topics = list(set(match.strip() for match in matches if match.strip()))
-            
-            # Sort the list for consistency (optional, but good for debugging)
             unique_topics.sort()
             return unique_topics
     else:
@@ -172,15 +175,15 @@ with st.sidebar:
 
 # --- UI Layout ---
 
-# 1. Title Section - MUCH LARGER FONT
-st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_allow_html=True)
+# 1. Title Section - Using div instead of p to avoid paragraph styling
+st.markdown('<div class="main-title">⚖️ Cloud Computing Chatbot</div>', unsafe_allow_html=True)
 
 # 2. Info Bars
-st.markdown('<p class="info-bar">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</p>', unsafe_allow_html=True)
-st.markdown(f'<p class="knowledge-bar">📚 <strong>Knowledge Base:</strong> Loaded with 1500+ unique comprehensive Cloud Computing topics</p>', unsafe_allow_html=True)
+st.markdown('<div class="info-bar">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="knowledge-bar">📚 <strong>Knowledge Base:</strong> Loaded with {len(all_topics)} unique comprehensive Cloud Computing topics</div>', unsafe_allow_html=True)
 
 # 3. Input Section
-st.markdown('<p class="section-header">📝 Enter Your Query</p>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">📝 Enter Your Query</div>', unsafe_allow_html=True)
 
 user_query = st.text_area(
     "",
@@ -211,7 +214,6 @@ if submit_btn and user_query:
                     "X-Title": "CSCLM Cloud Computing Chatbot"
                 }
                 
-                # Enhanced system prompt - NO "Certainly!" or similar phrases
                 system_prompt = f"""You are an expert Cloud Computing instructor for B.E. Computer Science and B.Tech IT students.
                 Your knowledge base contains {len(all_topics)} unique topics covering distributed systems, virtualization, security, and programming models.
                 
@@ -242,10 +244,7 @@ IMPORTANT INSTRUCTIONS:
                 
                 if response.status_code == 200:
                     result_text = response.json()["choices"][0]["message"]["content"]
-                    
-                    # Remove "Certainly!" and similar phrases from the beginning
                     result_text = re.sub(r'^(Certainly!|Of course!|Sure!|I\'d be happy to help|Absolutely!)\s*', '', result_text, flags=re.IGNORECASE)
-                    
                     st.session_state.result = result_text.strip()
                     st.success("✅ Response received!")
                 else:
@@ -256,7 +255,7 @@ IMPORTANT INSTRUCTIONS:
 
 # Display Result if exists
 if st.session_state.result:
-    st.markdown('<p class="section-header">📚 Response</p>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">📚 Response</div>', unsafe_allow_html=True)
     st.markdown(f"""
         <div class="result-area">
         {st.session_state.result}
@@ -264,13 +263,11 @@ if st.session_state.result:
     """, unsafe_allow_html=True)
 
 # 5. Suggestions Section (MOVED BELOW RESULT)
-st.markdown('<p class="section-header">💡 System Suggestion Prompts</p>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">💡 System Suggestion Prompts</div>', unsafe_allow_html=True)
 
-# Create a grid of suggestions (2 columns)
 for i in range(0, len(st.session_state.suggestions), 2):
     cols = st.columns(2)
     
-    # First item in the pair
     if i < len(st.session_state.suggestions):
         suggestion_1 = st.session_state.suggestions[i]
         with cols[0]:
@@ -278,7 +275,6 @@ for i in range(0, len(st.session_state.suggestions), 2):
                 st.session_state.query = suggestion_1
                 st.rerun()
             
-    # Second item in the pair (if exists)
     if i + 1 < len(st.session_state.suggestions):
         suggestion_2 = st.session_state.suggestions[i+1]
         with cols[1]:
@@ -286,14 +282,12 @@ for i in range(0, len(st.session_state.suggestions), 2):
                 st.session_state.query = suggestion_2
                 st.rerun()
 
-# Refresh button
 st.markdown("<br>", unsafe_allow_html=True)
 if st.button("🔄 Refresh Suggestions", use_container_width=True):
     if all_topics:
         st.session_state.suggestions = random.sample(all_topics, min(10, len(all_topics)))
         st.rerun()
 
-# Reset Logic
 if reset_btn:
     st.session_state.query = ""
     st.session_state.result = ""
@@ -301,7 +295,6 @@ if reset_btn:
         st.session_state.suggestions = random.sample(all_topics, min(10, len(all_topics)))
     st.rerun()
 
-# Footer
 st.markdown("---")
 st.markdown("""
     <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 

@@ -13,25 +13,29 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS
+# Custom CSS with larger title and compact results
 st.markdown("""
     <style>
+    /* Hide default Streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
+    /* Main Title - LARGER FONT SIZE */
     .main-title {
         color: #1e293b;
-        font-size: 3.2rem;
+        font-size: 4rem;  /* Increased from 3.2rem to 4rem */
         font-weight: 800;
         text-align: center;
         margin: 20px 0 10px 0;
-        padding: 15px;
+        padding: 20px;
         background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        letter-spacing: -0.5px;
     }
     
+    /* Info Boxes */
     .info-bar {
         background-color: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -52,6 +56,7 @@ st.markdown("""
         font-size: 1.05rem;
     }
 
+    /* Section Headers */
     .section-header {
         color: #1e293b;
         font-size: 1.8rem;
@@ -60,6 +65,7 @@ st.markdown("""
         text-align: center;
     }
 
+    /* Input Area */
     .stTextArea textarea {
         background-color: #f8fafc;
         color: #334155;
@@ -70,6 +76,7 @@ st.markdown("""
         padding: 15px;
     }
     
+    /* Result Area - COMPACT SPACING */
     .result-area {
         background-color: #f8fafc;
         color: #334155;
@@ -77,9 +84,18 @@ st.markdown("""
         border-radius: 12px;
         border: 2px solid #e2e8f0;
         font-size: 1.1rem;
-        line-height: 1.6;
+        line-height: 1.4;  /* Reduced from 1.6 to 1.4 */
         margin-top: 20px;
         white-space: pre-wrap;
+    }
+    
+    /* Remove extra margin between paragraphs in results */
+    .result-area p {
+        margin: 0.5em 0;  /* Reduced paragraph spacing */
+    }
+    
+    .result-area h1, .result-area h2, .result-area h3 {
+        margin: 0.8em 0 0.5em 0;  /* Reduced heading spacing */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -145,7 +161,7 @@ with st.sidebar:
 
 # --- UI Layout ---
 
-# 1. Title Section
+# 1. Title Section - LARGER FONT
 st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_allow_html=True)
 
 # 2. Info Bars

@@ -2,144 +2,136 @@ import streamlit as st
 import requests
 import json
 import random
-import os
 
-# Page configuration - hide sidebar by default
+# Page configuration
 st.set_page_config(
-    page_title="⚖️ CLOUD COMPUTING Chatbot",
+    page_title="⚖️ Cloud Computing Chatbot",
     page_icon="☁️",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for styling and hiding elements
+# Custom CSS for styling
 st.markdown("""
     <style>
-    /* Hide the main menu */
-    #nMenu {visibility: hidden;}
-    
-    /* Hide footer */
+    /* Hide default Streamlit elements */
+    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    
-    /* Hide sidebar toggle button */
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
-    /* Main title styling - Gray background, White text, Larger font */
+    /* Main Title - Style like Ref 1 */
     .main-title {
-        background: Green;
-        color: White;
-        font-size: 30 rem;
-        font-weight: bold;
+        color: #1e293b; /* Dark Slate/Black */
+        font-size: 3.2rem;
+        font-weight: 800;
         text-align: center;
-        margin-bottom: 1rem;
-        padding: 30px 40px;
-        border-radius: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        letter-spacing: 0.5px;
+        margin: 20px 0 10px 0;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        letter-spacing: -0.5px;
     }
     
-    /* Target audience styling */
-    .target-audience {
-        font-size: 1.15rem;
-        color: #374151;
-        text-align: left;
-        margin: 15px 0;
-        font-weight: 600;
-        padding: 10px 15px;
-        background-color: #f9fafb;
+    /* Info Boxes */
+    .info-bar {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 8px;
-        border-left: 4px solid #6b7280;
-    }
-    
-    /* Knowledge base styling */
-    .knowledge-base {
-        font-size: 1.1rem;
-        color: #1e40af;
-        text-align: left;
-        margin: 15px 0;
-        font-weight: 500;
-        padding: 15px 20px;
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border-radius: 10px;
-        border-left: 5px solid #3b82f6;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Suggestion prompt styling - Mild color background, Bold, Bigger */
-    .suggestion-button {
-        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        color: #374151;
-        font-size: 1.15rem;
-        font-weight: bold;
-        padding: 18px 24px;
+        padding: 15px;
         margin: 10px 0;
+        color: #475569;
+        font-size: 1.05rem;
+    }
+    
+    .knowledge-bar {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 10px 0;
+        color: #1e3a8a;
+        font-size: 1.05rem;
+    }
+
+    /* Section Headers */
+    .section-header {
+        color: #1e293b;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 30px 0 20px 0;
+        text-align: center;
+    }
+
+    /* Suggestion Buttons - Style like Ref 2 */
+    .suggestion-grid-btn {
+        background-color: #64748b; /* Slate Gray */
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 18px;
+        margin: 8px 0;
         border-radius: 10px;
-        border: 2px solid #d1d5db;
-        text-align: left;
+        border: none;
+        text-align: center;
         width: 100%;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     }
     
-    .suggestion-button:hover {
-        background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
-        border-color: #6b7280;
-        transform: translateX(5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .suggestion-grid-btn:hover {
+        background-color: #475569;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
     }
-    
-    /* Input text area styling */
+
+    /* Input Area */
     .stTextArea textarea {
-        background-color: #ffffff;
-        color: #1f2937;
+        background-color: #f8fafc;
+        color: #334155;
         font-weight: 600;
         font-size: 1.1rem;
-        border: 2px solid #9ca3af;
-        border-radius: 8px;
+        border: 2px solid #cbd5e1;
+        border-radius: 12px;
+        padding: 15px;
     }
     
-    /* Result text area styling */
-    .result-area {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-        color: white;
-        padding: 25px;
-        border-radius: 10px;
-        border: 2px solid #6b7280;
-        font-weight: 600;
-        font-size: 1.1rem;
-        min-height: 300px;
-        white-space: pre-wrap;
-        line-height: 1.6;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    /* Submit Button */
+    .submit-btn > button {
+        background-color: #3b82f6;
         color: white;
         font-weight: bold;
         font-size: 1.1rem;
-        border: 2px solid #6b7280;
+        border: none;
         padding: 12px 30px;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
     }
-    
-    .stButton > button:hover {
-        background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-        border-color: #374151;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-    
-    /* Section headers */
-    .section-header {
-        color: #4b5563;
-        font-size: 1.6rem;
+
+    /* Reset Button */
+    .reset-btn > button {
+        background-color: #ef4444;
+        color: white;
         font-weight: bold;
-        margin: 25px 0 15px 0;
-        padding-bottom: 12px;
-        border-bottom: 3px solid #9ca3af;
+        font-size: 1.1rem;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        width: 100%;
+    }
+
+    /* Result Area */
+    .result-area {
+        background-color: #f8fafc;
+        color: #334155;
+        padding: 25px;
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-top: 20px;
+        white-space: pre-wrap;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -178,7 +170,7 @@ cloud_topics = [
     "Case study: Amazon DynamoDB's distributed architecture"
 ]
 
-# Initialize session state
+# Session State
 if 'query' not in st.session_state:
     st.session_state.query = ""
 if 'result' not in st.session_state:
@@ -186,171 +178,136 @@ if 'result' not in st.session_state:
 if 'api_key' not in st.session_state:
     st.session_state.api_key = ""
 if 'suggestions' not in st.session_state:
-    st.session_state.suggestions = random.sample(cloud_topics, min(10, len(cloud_topics)))
+    st.session_state.suggestions = random.sample(cloud_topics, 10)
 
-# Minimal sidebar for API key (hidden by default but accessible)
+# Sidebar for API Key
 with st.sidebar:
-    st.header("⚙️ API Configuration")
-    
-    # Try to load API key from Streamlit secrets
-    api_key_loaded = False
+    st.header("⚙️ Configuration")
     try:
         from streamlit import secrets
         if "OPENROUTER_API_KEY" in secrets:
             st.session_state.api_key = secrets["OPENROUTER_API_KEY"]
-            api_key_loaded = True
             st.success("✅ API Key loaded from secrets!")
     except:
         pass
     
-    if not api_key_loaded:
-        api_key_input = st.text_input(
-            "Enter OpenRouter API Key:",
-            type="password",
-            help="Your API key is encrypted"
-        )
-        if api_key_input:
-            st.session_state.api_key = api_key_input
+    if not st.session_state.api_key:
+        key = st.text_input("OpenRouter API Key", type="password")
+        if key:
+            st.session_state.api_key = key
             st.success("✅ API Key saved!")
-    
-    st.markdown("---")
-    st.info("🎓 **For:** B.E. CS / B.Tech IT Students & Job Seekers")
 
-# Main Title Section
+# --- UI Layout ---
+
+# 1. Title Section (Like Ref 1)
 st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_allow_html=True)
 
-# Target Audience
-st.markdown('<p class="target-audience">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</p>', unsafe_allow_html=True)
+# 2. Info Bars
+st.markdown('<p class="info-bar">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</p>', unsafe_allow_html=True)
+st.markdown('<p class="knowledge-bar">📚 <strong>Knowledge Base:</strong> ** loaded with comprehensive Cloud Computing topics across all units</p>', unsafe_allow_html=True)
 
-# Knowledge Base
-st.markdown('<p class="knowledge-base">📚 <strong>Knowledge Base:</strong> ** loaded with comprehensive Cloud Computing topics across all units</p>', unsafe_allow_html=True)
+# 3. Input Section
+st.markdown('<p class="section-header">📝 Enter Your Query</p>', unsafe_allow_html=True)
 
-# Create two main columns
-col_left, col_right = st.columns([1, 1])
+user_query = st.text_area(
+    "",
+    value=st.session_state.query,
+    height=120,
+    placeholder="Ask about cloud computing concepts...",
+    key="user_query_input",
+    label_visibility="collapsed"
+)
 
-# LEFT COLUMN - Suggested Prompts
-with col_left:
-    st.markdown('<p class="section-header">💡 Suggested Prompts (Click to Use)</p>', unsafe_allow_html=True)
-    
-    # Display 10 random suggestions with mild color background, bold, bigger font
-    for i, suggestion in enumerate(st.session_state.suggestions):
-        # Create button with custom styling - mild gray background
-        btn_key = f"sugg_{i}"
-        if st.button(f"📌 {i+1}. {suggestion}", key=btn_key, use_container_width=True):
-            st.session_state.query = suggestion
-            st.rerun()
-    
-    # Refresh suggestions button
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🔄 Refresh Suggestions", use_container_width=True):
-        st.session_state.suggestions = random.sample(cloud_topics, min(10, len(cloud_topics)))
-        st.rerun()
+col_btn1, col_btn2 = st.columns([2, 1])
+with col_btn1:
+    submit_btn = st.button("📤 Submit Prompt", use_container_width=True)
+with col_btn2:
+    reset_btn = st.button("🔄 Reset", use_container_width=True)
 
-# RIGHT COLUMN - Query Input and Results
-with col_right:
-    st.markdown('<p class="section-header">💬 Enter Your Query</p>', unsafe_allow_html=True)
-    
-    # Text Field 1 - User Query Input
-    user_query = st.text_area(
-        "Type your Cloud Computing question here:",
-        value=st.session_state.query,
-        height=120,
-        placeholder="E.g., Explain virtualization in cloud computing...",
-        key="user_query_input",
-        label_visibility="collapsed"
-    )
-    
-    # Buttons - Submit and Reset
-    col_btn1, col_btn2 = st.columns(2)
-    
-    with col_btn1:
-        submit_btn = st.button("📤 Submit Prompt", use_container_width=True)
-    
-    with col_btn2:
-        reset_btn = st.button("🔄 Reset", use_container_width=True)
-    
-    # Handle Reset
-    if reset_btn:
-        st.session_state.query = ""
-        st.session_state.result = ""
-        st.session_state.suggestions = random.sample(cloud_topics, min(10, len(cloud_topics)))
-        st.rerun()
-    
-    # Handle Submit
-    if submit_btn and user_query:
-        if not st.session_state.api_key:
-            st.error("❌ Please configure your OpenRouter API Key in the sidebar (click ☰ menu).")
-        else:
-            with st.spinner("🤖 Getting response from Qwen AI..."):
-                try:
-                    # Prepare API request
-                    headers = {
-                        "Authorization": f"Bearer {st.session_state.api_key}",
-                        "Content-Type": "application/json",
-                        "HTTP-Referer": "https://github.com/amrithtech23-ux/CSCLM",
-                        "X-Title": "CSCLM Cloud Computing Chatbot"
-                    }
-                    
-                    system_prompt = """You are an expert Cloud Computing instructor for B.E. Computer Science and B.Tech IT students. 
-                    Provide clear, detailed, educational answers with practical examples and real-world applications.
-                    Structure your responses for easy understanding."""
-                    
-                    payload = {
-                        "model": "qwen/qwen-2.5-72b-instruct",
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": user_query}
-                        ],
-                        "temperature": 0.7,
-                        "max_tokens": 1000
-                    }
-                    
-                    response = requests.post(
-                        "https://openrouter.ai/api/v1/chat/completions",
-                        headers=headers,
-                        json=payload,
-                        timeout=60
-                    )
-                    
-                    if response.status_code == 200:
-                        result_data = response.json()
-                        st.session_state.result = result_data["choices"][0]["message"]["content"]
-                        st.session_state.query = user_query
-                        st.success("✅ Response received!")
-                    else:
-                        st.error(f"❌ API Error: {response.status_code}")
-                        st.error(f"Details: {response.text}")
-                        
-                except requests.exceptions.Timeout:
-                    st.error("❌ Request timed out. Please try again.")
-                except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
-    
-    # Text Field 2 - Result Display (Multi-line)
-    st.markdown('<p class="section-header">📚 Response</p>', unsafe_allow_html=True)
-    
-    if st.session_state.result:
-        st.markdown(f"""
-            <div class="result-area">
-            {st.session_state.result}
-            </div>
-        """, unsafe_allow_html=True)
+# 4. Logic for Submit & Result Display
+if submit_btn and user_query:
+    if not st.session_state.api_key:
+        st.error("❌ Please configure your OpenRouter API Key in the sidebar.")
     else:
-        st.markdown("""
-            <div class="result-area" style="color: #9ca3af; font-style: italic;">
-                Your response will appear here after submitting a query...
-            </div>
-        """, unsafe_allow_html=True)
+        with st.spinner("🤖 Getting response from Qwen AI..."):
+            try:
+                headers = {
+                    "Authorization": f"Bearer {st.session_state.api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://github.com/amrithtech23-ux/CSCLM",
+                    "X-Title": "CSCLM Cloud Computing Chatbot"
+                }
+                
+                system_prompt = """You are an expert Cloud Computing instructor for B.E. Computer Science and B.Tech IT students. 
+                Provide clear, detailed, educational answers with practical examples and real-world applications.
+                Structure your responses for easy understanding."""
+                
+                payload = {
+                    "model": "qwen/qwen-2.5-72b-instruct",
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_query}
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 1000
+                }
+                
+                response = requests.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers=headers,
+                    json=payload,
+                    timeout=60
+                )
+                
+                if response.status_code == 200:
+                    st.session_state.result = response.json()["choices"][0]["message"]["content"]
+                    st.success("✅ Response received!")
+                else:
+                    st.error(f"❌ Error: {response.text}")
+                    
+            except Exception as e:
+                st.error(f"❌ Error: {str(e)}")
 
-# Footer with academic theme
-st.markdown("---")
-st.markdown("""
-    <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
-                text-align: center; color: #4b5563; font-weight: bold; 
-                padding: 25px; margin-top: 30px; border-radius: 10px;
-                border-top: 3px solid #9ca3af;">
-        <p style="font-size: 1.3rem; margin-bottom: 8px;">🎓 CSCLM - Cloud Computing Learning Module</p>
-        <p style="font-size: 1.05rem; margin-bottom: 12px;">B.E. Computer Science | B.Tech Information Technology</p>
-        <p style="font-size: 0.95rem; color: #6b7280;">License: MIT | Powered by OpenRouter API & Qwen AI</p>
-    </div>
-""", unsafe_allow_html=True)
+# Display Result if exists
+if st.session_state.result:
+    st.markdown('<p class="section-header">📚 Response</p>', unsafe_allow_html=True)
+    st.markdown(f"""
+        <div class="result-area">
+        {st.session_state.result}
+        </div>
+    """, unsafe_allow_html=True)
+
+# 5. Suggestions Section (MOVED BELOW RESULT - Style like Ref 2)
+st.markdown('<p class="section-header">💡 System Suggestion Prompts</p>', unsafe_allow_html=True)
+
+# Create a grid of suggestions (2 columns)
+for i in range(0, len(st.session_state.suggestions), 2):
+    cols = st.columns(2)
+    
+    # First item in the pair
+    suggestion_1 = st.session_state.suggestions[i]
+    with cols[0]:
+        if st.button(f"• {suggestion_1}", key=f"sugg_{i}", use_container_width=True):
+            st.session_state.query = suggestion_1
+            st.rerun()
+            
+    # Second item in the pair (if exists)
+    if i + 1 < len(st.session_state.suggestions):
+        suggestion_2 = st.session_state.suggestions[i+1]
+        with cols[1]:
+            if st.button(f"• {suggestion_2}", key=f"sugg_{i+1}", use_container_width=True):
+                st.session_state.query = suggestion_2
+                st.rerun()
+
+# Refresh Button
+st.markdown("<br>", unsafe_allow_html=True)
+if st.button("🔄 Refresh Suggestions", use_container_width=True):
+    st.session_state.suggestions = random.sample(cloud_topics, 10)
+    st.rerun()
+
+# Reset Logic
+if reset_btn:
+    st.session_state.query = ""
+    st.session_state.result = ""
+    st.session_state.suggestions = random.sample(cloud_topics, 10)
+    st.rerun()

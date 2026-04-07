@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS with updated suggestion card styling
+# Custom CSS with larger title and compact results
 st.markdown("""
     <style>
     /* Hide default Streamlit elements */
@@ -117,20 +117,16 @@ st.markdown("""
         line-height: 1.25 !important;
     }
     
-    .result-area br {
-        line-height: 0.5 !important;
-    }
-    
     /* Suggestion Cards - BLACK BORDER, WHITE BACKGROUND, BLUE TEXT */
     .suggestion-card {
         background-color: #ffffff !important;
-        color: #2563eb !important;  /* Blue color */
-        font-size: 1rem;
+        color: #2563eb !important;
+        font-size: 1.05rem;
         font-weight: 600;
         padding: 15px 20px;
         margin: 8px 0;
         border-radius: 8px;
-        border: 2px solid #000000 !important;  /* Black border */
+        border: 2px solid #000000 !important;
         text-align: left;
         width: 100%;
         cursor: pointer;
@@ -143,8 +139,8 @@ st.markdown("""
     }
     
     .suggestion-card:hover {
-        background-color: #f0f9ff !important;  /* Light blue on hover */
-        border-color: #2563eb !important;  /* Blue border on hover */
+        background-color: #f0f9ff !important;
+        border-color: #2563eb !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     }
@@ -168,6 +164,21 @@ st.markdown("""
     .use-btn:hover {
         background-color: #e2e8f0;
         border-color: #94a3b8;
+    }
+    
+    /* Hint text - INCREASED FONT SIZE */
+    .hint-text {
+        text-align: center;
+        color: #64748b;
+        font-size: 1.2rem !important;  /* Increased from 0.95rem to 1.2rem */
+        font-weight: 600 !important;    /* Made bold */
+        margin-bottom: 20px;
+    }
+    
+    /* Submit and Reset Buttons - BOLD */
+    .stButton > button {
+        font-weight: 700 !important;  /* Bold text */
+        font-size: 1.1rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -317,13 +328,14 @@ if st.session_state.result:
 
 # 5. Suggestions Section (COPYABLE - BELOW RESULT)
 st.markdown('<div class="section-header">💡 System Suggestion Prompts</div>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
+# Hint text with increased font size and bold
+st.markdown('<p class="hint-text">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
 
 # Create a grid of copyable suggestion cards (2 columns)
 for i in range(0, len(st.session_state.suggestions), 2):
     cols = st.columns(2)
     
-    # First suggestion - Copyable card with black border, white background, blue text
+    # First suggestion
     if i < len(st.session_state.suggestions):
         suggestion_1 = st.session_state.suggestions[i]
         with cols[0]:
@@ -336,7 +348,7 @@ for i in range(0, len(st.session_state.suggestions), 2):
                 st.session_state.query = suggestion_1
                 st.rerun()
             
-    # Second suggestion - Copyable card with black border, white background, blue text
+    # Second suggestion
     if i + 1 < len(st.session_state.suggestions):
         suggestion_2 = st.session_state.suggestions[i+1]
         with cols[1]:

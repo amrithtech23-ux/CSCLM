@@ -28,12 +28,12 @@ st.markdown("""
     .main-title {
         background: Green;
         color: White;
-        font-size: 60 rem;
+        font-size: 30 rem;
         font-weight: bold;
         text-align: center;
         margin-bottom: 1rem;
         padding: 30px 40px;
-        border-radius: 12px;
+        border-radius: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         letter-spacing: 0.5px;
     }

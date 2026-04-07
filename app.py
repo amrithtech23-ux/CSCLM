@@ -24,7 +24,7 @@ st.markdown("""
     /* Main Title - MUCH LARGER FONT SIZE - FORCE OVERRIDE */
     .main-title {
         color: #1e293b !important;
-        font-size: 3 rem !important;
+        font-size: 4.5 rem !important;
         font-weight: 800 !important;
         text-align: center !important;
         margin: 20px 0 10px 0 !important;

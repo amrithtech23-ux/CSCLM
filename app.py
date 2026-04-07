@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS with larger title and compact results
+# Custom CSS with updated suggestion card styling
 st.markdown("""
     <style>
     /* Hide default Streamlit elements */
@@ -91,7 +91,7 @@ st.markdown("""
         white-space: pre-wrap;
     }
     
-    /* Remove ALL extra margin between paragraphs - TIGHTEST */
+    /* Remove ALL extra margin between paragraphs */
     .result-area p {
         margin: 0 !important;
         padding: 0 !important;
@@ -121,21 +121,21 @@ st.markdown("""
         line-height: 0.5 !important;
     }
     
-    /* Copyable Suggestion Cards */
+    /* Suggestion Cards - BLACK BORDER, WHITE BACKGROUND, BLUE TEXT */
     .suggestion-card {
-        background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-        color: white;
+        background-color: #ffffff !important;
+        color: #2563eb !important;  /* Blue color */
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         padding: 15px 20px;
         margin: 8px 0;
-        border-radius: 10px;
-        border: none;
+        border-radius: 8px;
+        border: 2px solid #000000 !important;  /* Black border */
         text-align: left;
         width: 100%;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         user-select: text;
         -webkit-user-select: text;
         -moz-user-select: text;
@@ -143,43 +143,33 @@ st.markdown("""
     }
     
     .suggestion-card:hover {
-        background: linear-gradient(135deg, #475569 0%, #334155 100%);
+        background-color: #f0f9ff !important;  /* Light blue on hover */
+        border-color: #2563eb !important;  /* Blue border on hover */
         transform: translateY(-2px);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     }
     
     .suggestion-card:active {
         transform: translateY(0);
     }
     
-    /* Copy button for suggestions */
-    .copy-btn {
-        background-color: #3b82f6;
-        color: white;
-        border: none;
+    /* Use button styling */
+    .use-btn {
+        background-color: #f8fafc;
+        color: #475569;
+        border: 1px solid #cbd5e1;
         padding: 5px 12px;
         border-radius: 5px;
         font-size: 0.85rem;
         cursor: pointer;
-        margin-left: 10px;
-        float: right;
+        margin-top: 5px;
     }
     
-    .copy-btn:hover {
-        background-color: #2563eb;
+    .use-btn:hover {
+        background-color: #e2e8f0;
+        border-color: #94a3b8;
     }
     </style>
-    
-    <script>
-    // JavaScript for copy functionality
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(function() {
-            alert('Copied: ' + text.substring(0, 50) + '...');
-        }).catch(function(err) {
-            console.error('Failed to copy: ', err);
-        });
-    }
-    </script>
 """, unsafe_allow_html=True)
 
 # Function to load topics and remove duplicates
@@ -327,28 +317,26 @@ if st.session_state.result:
 
 # 5. Suggestions Section (COPYABLE - BELOW RESULT)
 st.markdown('<div class="section-header">💡 System Suggestion Prompts</div>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: Black; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
 
 # Create a grid of copyable suggestion cards (2 columns)
 for i in range(0, len(st.session_state.suggestions), 2):
     cols = st.columns(2)
     
-    # First suggestion - Copyable card
+    # First suggestion - Copyable card with black border, white background, blue text
     if i < len(st.session_state.suggestions):
         suggestion_1 = st.session_state.suggestions[i]
         with cols[0]:
-            # Display as styled div with click-to-use functionality
             st.markdown(f"""
-                <div class="suggestion-card" onclick="if(this.dataset.clicked) {{ window.parent.location.search = '?query={suggestion_1.replace(' ', '%20')}'; }} else {{ this.dataset.clicked = 'true'; }}" data-query="{suggestion_1}">
+                <div class="suggestion-card" data-query="{suggestion_1}">
                 • {suggestion_1}
                 </div>
             """, unsafe_allow_html=True)
-            # Add a hidden button that users can click to use the suggestion
             if st.button(f"📋 Use", key=f"use_{i}", help="Use this prompt"):
                 st.session_state.query = suggestion_1
                 st.rerun()
             
-    # Second suggestion - Copyable card
+    # Second suggestion - Copyable card with black border, white background, blue text
     if i + 1 < len(st.session_state.suggestions):
         suggestion_2 = st.session_state.suggestions[i+1]
         with cols[1]:

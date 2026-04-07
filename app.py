@@ -178,7 +178,7 @@ st.markdown("""
     /* Submit and Reset Buttons - BOLD */
     .stButton > button {
         font-weight: 700 !important;  /* Bold text */
-        font-size: 1.1rem !important;
+        font-size: 2.1rem !important;
     }
     </style>
 """, unsafe_allow_html=True)

@@ -145,7 +145,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Cloud Computing topics from knowledge base
+# topics from knowledge base
 cloud_topics = [
     "Evolution from centralized to distributed systems: A technical timeline",
     "Client-server vs. peer-to-peer architecture: A comparative study",
@@ -215,10 +215,10 @@ with st.sidebar:
             st.success("✅ API Key saved!")
     
     st.markdown("---")
-    st.info("🎓 **For:** B.E. CS / B.Tech IT Students & Job Seekers")
+    st.info("🎓 **For:** B.E. CS / B.Tech IT Engineering Students & Job Seekers")
 
 # Main Title - Gray background with white text
-st.markdown('<p class="main-title">⚖️ CLOUD COMPUTING for B.E.Computer Science/B.Tech Information Technology Chatbot</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-title">⚖️ CLOUD COMPUTING  Chatbot</p>', unsafe_allow_html=True)
 
 # Subtitle
 st.markdown('<p class="subtitle">Interactive Learning Platform for Cloud Computing Concepts</p>', unsafe_allow_html=True)

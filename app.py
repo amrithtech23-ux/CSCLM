@@ -16,7 +16,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     /* Hide the main menu */
-    #MainMenu {visibility: hidden;}
+    #nMenu {visibility: hidden;}
     
     /* Hide footer */
     footer {visibility: hidden;}
@@ -26,9 +26,9 @@ st.markdown("""
     
     /* Main title styling - Gray background, White text, Larger font */
     .main-title {
-        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-        color: white;
-        font-size: 2.8rem;
+        background: WHite;
+        color: Black;
+        font-size: 4.8rem;
         font-weight: bold;
         text-align: center;
         margin-bottom: 1rem;

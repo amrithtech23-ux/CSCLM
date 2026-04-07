@@ -21,7 +21,7 @@ st.markdown("""
     footer {visibility: hidden;}
     button[data-testid="baseButton-header"] {visibility: hidden;}
     
-    /* Main Title - MUCH LARGER FONT SIZE - FORCE OVERRIDE */
+    /* Main Title */
     .main-title {
         color: #1e293b !important;
         font-size: 3.5rem !important;
@@ -35,12 +35,6 @@ st.markdown("""
         letter-spacing: -0.5px !important;
         line-height: 1.2 !important;
         display: block !important;
-    }
-    
-    /* Remove any paragraph styling that might interfere */
-    .main-title p {
-        margin: 0 !important;
-        padding: 0 !important;
     }
     
     /* Info Boxes */
@@ -84,39 +78,108 @@ st.markdown("""
         padding: 15px;
     }
     
-    /* Result Area - COMPACT SPACING */
+    /* Result Area - ULTRA COMPACT SPACING */
     .result-area {
         background-color: #f8fafc;
         color: #334155;
-        padding: 25px;
+        padding: 20px;
         border-radius: 12px;
         border: 2px solid #e2e8f0;
-        font-size: 1.15rem;
-        line-height: 1.3;
+        font-size: 1.1rem;
+        line-height: 1.25;
         margin-top: 20px;
         white-space: pre-wrap;
     }
     
-    /* Remove extra margin between paragraphs in results */
+    /* Remove ALL extra margin between paragraphs - TIGHTEST */
     .result-area p {
-        margin: 0.3em 0;
-        line-height: 1.3;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.25 !important;
+    }
+    
+    .result-area p + p {
+        margin-top: 0.4em !important;
     }
     
     .result-area h1, .result-area h2, .result-area h3, .result-area h4 {
-        margin: 0.6em 0 0.4em 0;
-        line-height: 1.3;
+        margin: 0.5em 0 0.3em 0 !important;
+        line-height: 1.25 !important;
     }
     
     .result-area ul, .result-area ol {
-        margin: 0.3em 0;
+        margin: 0.2em 0 !important;
         padding-left: 1.5em;
     }
     
     .result-area li {
-        margin: 0.2em 0;
+        margin: 0.1em 0 !important;
+        line-height: 1.25 !important;
+    }
+    
+    .result-area br {
+        line-height: 0.5 !important;
+    }
+    
+    /* Copyable Suggestion Cards */
+    .suggestion-card {
+        background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 15px 20px;
+        margin: 8px 0;
+        border-radius: 10px;
+        border: none;
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+    }
+    
+    .suggestion-card:hover {
+        background: linear-gradient(135deg, #475569 0%, #334155 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    .suggestion-card:active {
+        transform: translateY(0);
+    }
+    
+    /* Copy button for suggestions */
+    .copy-btn {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        margin-left: 10px;
+        float: right;
+    }
+    
+    .copy-btn:hover {
+        background-color: #2563eb;
     }
     </style>
+    
+    <script>
+    // JavaScript for copy functionality
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Copied: ' + text.substring(0, 50) + '...');
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+        });
+    }
+    </script>
 """, unsafe_allow_html=True)
 
 # Function to load topics and remove duplicates
@@ -175,7 +238,7 @@ with st.sidebar:
 
 # --- UI Layout ---
 
-# 1. Title Section - Using div instead of p to avoid paragraph styling
+# 1. Title Section
 st.markdown('<div class="main-title">⚖️ Cloud Computing Chatbot</div>', unsafe_allow_html=True)
 
 # 2. Info Bars
@@ -221,7 +284,7 @@ IMPORTANT INSTRUCTIONS:
 - Provide clear, detailed, educational answers with practical examples
 - DO NOT use introductory phrases like "Certainly!", "Of course!", "Sure!", "I'd be happy to help", etc.
 - Start directly with the answer content
-- Use concise paragraphs with minimal spacing
+- Use concise paragraphs with minimal spacing - keep paragraphs tight
 - Structure information with headings and bullet points where appropriate
 - Focus on technical accuracy and educational value"""
                 
@@ -262,32 +325,50 @@ if st.session_state.result:
         </div>
     """, unsafe_allow_html=True)
 
-# 5. Suggestions Section (MOVED BELOW RESULT)
+# 5. Suggestions Section (COPYABLE - BELOW RESULT)
 st.markdown('<div class="section-header">💡 System Suggestion Prompts</div>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
 
+# Create a grid of copyable suggestion cards (2 columns)
 for i in range(0, len(st.session_state.suggestions), 2):
     cols = st.columns(2)
     
+    # First suggestion - Copyable card
     if i < len(st.session_state.suggestions):
         suggestion_1 = st.session_state.suggestions[i]
         with cols[0]:
-            if st.button(f"• {suggestion_1}", key=f"sugg_{i}", use_container_width=True):
+            # Display as styled div with click-to-use functionality
+            st.markdown(f"""
+                <div class="suggestion-card" onclick="if(this.dataset.clicked) {{ window.parent.location.search = '?query={suggestion_1.replace(' ', '%20')}'; }} else {{ this.dataset.clicked = 'true'; }}" data-query="{suggestion_1}">
+                • {suggestion_1}
+                </div>
+            """, unsafe_allow_html=True)
+            # Add a hidden button that users can click to use the suggestion
+            if st.button(f"📋 Use", key=f"use_{i}", help="Use this prompt"):
                 st.session_state.query = suggestion_1
                 st.rerun()
             
+    # Second suggestion - Copyable card
     if i + 1 < len(st.session_state.suggestions):
         suggestion_2 = st.session_state.suggestions[i+1]
         with cols[1]:
-            if st.button(f"• {suggestion_2}", key=f"sugg_{i+1}", use_container_width=True):
+            st.markdown(f"""
+                <div class="suggestion-card" data-query="{suggestion_2}">
+                • {suggestion_2}
+                </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"📋 Use", key=f"use_{i+1}", help="Use this prompt"):
                 st.session_state.query = suggestion_2
                 st.rerun()
 
+# Refresh button
 st.markdown("<br>", unsafe_allow_html=True)
 if st.button("🔄 Refresh Suggestions", use_container_width=True):
     if all_topics:
         st.session_state.suggestions = random.sample(all_topics, min(10, len(all_topics)))
         st.rerun()
 
+# Reset Logic
 if reset_btn:
     st.session_state.query = ""
     st.session_state.result = ""
@@ -295,6 +376,7 @@ if reset_btn:
         st.session_state.suggestions = random.sample(all_topics, min(10, len(all_topics)))
     st.rerun()
 
+# Footer
 st.markdown("---")
 st.markdown("""
     <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 

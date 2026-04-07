@@ -221,7 +221,7 @@ with st.sidebar:
 st.markdown('<p class="main-title">⚖️ CLOUD COMPUTING  Chatbot</p>', unsafe_allow_html=True)
 
 # Subtitle
-st.markdown('<p class="subtitle">Interactive Learning Platform for Cloud Computing Concepts</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle"><b>Interactive Learning Platform for Cloud Computing Concepts</b></p>', unsafe_allow_html=True)
 
 # Info box
 st.markdown("""

@@ -177,7 +177,7 @@ st.markdown('<p class="main-title">⚖️ Cloud Computing Chatbot</p>', unsafe_a
 
 # 2. Info Bars
 st.markdown('<p class="info-bar">🎯 <strong>Target Audience:</strong> B.E. CS / B.Tech IT Engineering Students & IT Industry Job Seekers</p>', unsafe_allow_html=True)
-st.markdown(f'<p class="knowledge-bar">📚 <strong>Knowledge Base:</strong> Loaded with {len(all_topics)} unique comprehensive Cloud Computing topics</p>', unsafe_allow_html=True)
+st.markdown(f'<p class="knowledge-bar">📚 <strong>Knowledge Base:</strong> Loaded with 1500+ unique comprehensive Cloud Computing topics</p>', unsafe_allow_html=True)
 
 # 3. Input Section
 st.markdown('<p class="section-header">📝 Enter Your Query</p>', unsafe_allow_html=True)

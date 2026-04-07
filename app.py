@@ -327,7 +327,7 @@ if st.session_state.result:
 
 # 5. Suggestions Section (COPYABLE - BELOW RESULT)
 st.markdown('<div class="section-header">💡 System Suggestion Prompts</div>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: Green; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: Red; font-size: 0.95rem; margin-bottom: 20px;">💡 Click to use • Text is selectable for copying</p>', unsafe_allow_html=True)
 
 # Create a grid of copyable suggestion cards (2 columns)
 for i in range(0, len(st.session_state.suggestions), 2):

@@ -73,7 +73,7 @@ st.markdown("""
         color: #334155;
         font-weight: 600;
         font-size: 1.1rem;
-        border: 2px solid #cbd5e1;
+        border: 3px solid #cbd5e1;
         border-radius: 12px;
         padding: 15px;
     }
@@ -84,7 +84,7 @@ st.markdown("""
         color: #334155;
         padding: 20px;
         border-radius: 12px;
-        border: 2px solid #e2e8f0;
+        border: 3px solid #e2e8f0;
         font-size: 1.1rem;
         line-height: 1.25;
         margin-top: 20px;
